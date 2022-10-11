@@ -1,5 +1,3 @@
-
-import { Container } from "@mui/system";
 import React from "react";
 import {
     LineChart,
@@ -44,32 +42,35 @@ const data = [
 
 const Example = () => {
   return (
-    <Container fixed>
+    
       <LineChart
-          width={900}
-          height={600}
+          width={600}
+          height={300}
           data={data}
           margin={{
-              top: 100,
+              top: 20,
               right: 0,
               left: 80,
-              bottom: 25
+              bottom:0
           }}
       >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
+          <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+          <YAxis tick={{ fontSize: 12 }} />
+          <Tooltip contentStyle={{
+            fontSize: '14px'
+          }} />
           
           <Line
               type="monotone"
               dataKey="pv"
               stroke="#8884d8"
               activeDot={{ r: 8 }}
+              
           />
 
       </LineChart>
-      </Container>
+      
   )
 }
 

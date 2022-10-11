@@ -9,22 +9,29 @@ import Example from '../../components/app/Example'
 import SelectLabels1 from '../../components/app/SelectLabels1';
 import SelectLabels2 from '../../components/app/SelectLabels2';
 import SelectLabels3 from '../../components/app/SelectLabels3';
+import { Grid } from '@mui/material';
 
 export default function TimetrackingForecast() {
-  
+
 
   return (
     <React.Fragment>
-      <CssBaseline/>
+      <CssBaseline />
       <Typography variant="h3" component="h1" gutterBottom>
-        
-      
-      <SelectLabels1/>
-      <SelectLabels2/>
-      <SelectLabels3/>
-        <Example />
+
+        <Grid container xs={12}>
+          <Grid xs={2} >
+            <SelectLabels1 />
+            <SelectLabels2 />
+            <SelectLabels3 />
+          </Grid>
+          <Grid xs={10}>
+            <Example />
+          </Grid>
+          
+        </Grid>
       </Typography>
-      <Footer/>
+      <Footer />
     </React.Fragment>
   );
 }
