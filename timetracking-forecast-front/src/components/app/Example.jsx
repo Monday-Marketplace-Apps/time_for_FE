@@ -44,8 +44,8 @@ const Example = () => {
   return (
     
       <LineChart
-          width={600}
-          height={300}
+          width={700}
+          height={400}
           data={data}
           margin={{
               top: 20,
