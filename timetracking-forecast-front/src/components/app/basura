@@ -47,7 +47,7 @@ export default function MultipleSelectPlaceholder1(props) {
     const handleChange = (event) => {
         const {
             
-            target: { value },
+            target: { value, graf },
             
         } = event;
         
@@ -57,8 +57,8 @@ export default function MultipleSelectPlaceholder1(props) {
             typeof value === 'string' ? value.split(',') : value,
         
         );
-        console.log('graf',value)
-        cambiarGrafica(value)
+        console.log('graf', graf)
+        cambiarGrafica(graf)
     };
 
     return (
@@ -68,7 +68,8 @@ export default function MultipleSelectPlaceholder1(props) {
                     multiple
                     displayEmpty
                     value={personName}
-                    onChange={handleChange}
+                    graf={datosGrafico}
+                    //onChange={handleChange}
                     input={<OutlinedInput />}
                     renderValue={(selected) => {
                         if (selected.length === 0) {
@@ -89,7 +90,6 @@ export default function MultipleSelectPlaceholder1(props) {
                             value={dato.name}
                             graf={dato['horas']}
                             style={getStyles(dato.name, personName, theme)}
-                           
                             //onClick={()=>cambiarGrafica(dato['horas'])}
                         >{/*{console.log(dato['horas'], 'dato[horas] en menuitem placeholder1')}*/}
                             {dato.name}

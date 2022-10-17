@@ -18,33 +18,62 @@ import { useEffect } from 'react';
 
 export default function TimetrackingForecast() {
 
-  const [data, setData] = useState(null)
+  const [datos, setDatos] = useState(null)
 
   useEffect(()=>{
-    if (data == null) {
+    if (datos == null) {
       obtainData()
     }
-  },[data])
+  }, [datos])
+
+
+
 
   const obtainData = async () => {
     const api = await fetch("http://127.0.0.1:8000/api/");
     const data = await api.json();
-    setData(data)
+    setDatos(data)
   }
-  console.log(data)
 
+  const [personName, setPersonName] = useState([]);
+
+  const [datosGrafico,setDatosGrafico] =useState(null)
+  useEffect(()=>{})
+  if(personName==null){setDatosGrafico(null)}
   
+  const cambiarGrafica=(nombre) => {
+    console.log('nombre cambiarGrafica',nombre)
+    
+    datos.map((dato) => {
+      console.log('entro en map cambiar grafica timetra imprimo dato', dato)
+      
+      if (dato['name'] == nombre){
+        const graf=[]
+        console.log('entro en if imprimo dato',dato)
+        dato['horas'].map((hora) => {
+          console.log('dentro de map graf', hora);
+          
+          graf.push({ 'fecha': Object.keys(hora), 'horas_h': Object.values(hora) })
+          console.log('pasada map graf', graf)
+        
+          console.log('graf fuera map', graf)
+          setDatosGrafico(graf)})
+        }
+    })
+    
+  }
+  console.log('datosGrafico TimeTracking',datosGrafico)
 
   return (
     <>
-    {data ? (
+      {datos ? (
       <React.Fragment>
       <CssBaseline />
       <Typography variant="h3" component="h1" gutterBottom>
 
         <Grid container columnSpacing={40} >
           <Grid item xs={2} >
-            <MultipleSelectPlaceholder1 data={data}/>
+                <MultipleSelectPlaceholder1 datos={datos} personName={personName} setPersonName={setPersonName} cambiarGrafica={cambiarGrafica} datosGrafico={datosGrafico} />
             <MultipleSelectPlaceholder2/>
             <MultipleSelectPlaceholder3/>
             <SelectLabels1/>
@@ -53,7 +82,7 @@ export default function TimetrackingForecast() {
             
           </Grid>
           <Grid item xs={8}>
-            <Example />
+                <Example datosGrafico={datosGrafico} />
           </Grid>
           
         </Grid>
