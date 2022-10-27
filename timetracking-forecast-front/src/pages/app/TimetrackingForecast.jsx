@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import ComboBoxNombres from '../../components/app/ComboBoxNombres';
 import ComboBoxColumna from '../../components/app/ComboBoxColumna';
 import ComboBoxPeriodo from '../../components/app/ComboBoxPeriodo';
+import BarGraph from '../../components/app/BarGraph';
 
 export default function TimetrackingForecast() {
 
@@ -141,8 +142,16 @@ export default function TimetrackingForecast() {
       const graf = []
       datos[indicesColumnas][columna][indicesNombres][personName][0]['datoreal'][indicesPeriodo][periodo].map((dato)=>{
         console.log('dato dentro map useefect dato',dato)
-        graf.push({ 'fecha': Object.keys(dato), 'horas_h': Object.values(dato) })
+        graf.push({ 'Fecha': Object.keys(dato)[0], 'Horas': Object.values(dato)[0] })
+        //console.log('Object.keys(dato)', Object.keys(dato)[0])
       })
+      console.log('acceso prediccion', Object.keys(datos[indicesColumnas][columna][indicesNombres][personName][1]['prediccion'][indicesPeriodo]))
+      graf.push({ 'Fecha': Object.keys(datos[indicesColumnas][columna][indicesNombres][personName][1]['prediccion'][indicesPeriodo]), 'Predicción': Object.values(datos[indicesColumnas][columna][indicesNombres][personName][1]['prediccion'][indicesPeriodo]) })
+      // datos[indicesColumnas][columna][indicesNombres][personName][1]['prediccion'][indicesPeriodo].map((dato) => {
+      //   console.log('dato dentro map useefect dato', dato)
+      //   graf.push({ 'Fecha': Object.keys(dato)[0], 'Predicción': Object.values(dato)[0] })
+      //   console.log('Object.keys(dato)', Object.keys(dato)[0])
+      // })
       setDatosGrafico(graf)
     }
   
@@ -188,12 +197,13 @@ export default function TimetrackingForecast() {
                 <h6> Seleccione columna</h6>
               )}
          
-
+              
                 
                 
               </Grid>
               <Grid item xs={8}>
-                <Example datosGrafico={datosGrafico} />
+                <BarGraph datosGrafico={datosGrafico} />
+                {/* <Example datosGrafico={datosGrafico} /> */}
               </Grid>
 
             </Grid>
