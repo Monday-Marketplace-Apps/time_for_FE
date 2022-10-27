@@ -4,15 +4,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 
 import Footer from '../../components/base/Footer';
-import BasicBreadcrumbs from '../../components/app/BasicBreadcrumbs';
 import Example from '../../components/app/Example'
-import SelectLabels1 from '../../components/app/SelectLabels1';
-import SelectLabels2 from '../../components/app/SelectLabels2';
-import SelectLabels3 from '../../components/app/SelectLabels3';
-import { Button, Grid } from '@mui/material';
-import MultipleSelectPlaceholder1 from '../../components/app/PlaceHolder1';
-import MultipleSelectPlaceholder2 from '../../components/app/PlaceHolder2';
-import MultipleSelectPlaceholder3 from '../../components/app/PlaceHolder3';
+import { Grid } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import ComboBoxNombres from '../../components/app/ComboBoxNombres';
@@ -42,49 +35,24 @@ export default function TimetrackingForecast() {
   const [listaColumna, setListaColumna] = useState([])
   // listaPeriodo valores de seleccion en select formato label:periodo
   const [listaPeriodo, setListaPeriodo] = useState([])
+
+  const [indicesColumnas, setIndicesColumnas] = useState([])
+
+  const [indicesNombres, setIndicesNombres] = useState(null)
+
+  const [ indicesPeriodo, setIndicesPeriodo] = useState(null)
  
   const [datosGrafico, setDatosGrafico] = useState(null);
 
-  useEffect(() => {
-    if (datos != null) {
-      console.log('useeffect datos', datos)
-      const listanombres = []
-      const listaColumna=[]
-      const listaPeriodos=[]
-      
+  
 
-      //datos nombres
-      datos[0]['columna1'].map((dato) => {
+ 
 
-        console.log('datos map useeffect', dato)
-        listanombres.push({ 'label': Object.keys(dato).toString() });
-      });
 
-      //datos columna
-      console.log('Columna datos[0][columna1][0][ruben][datoreal]', datos)
-      
-      datos.map((columna) => {
 
-        console.log('tipo map useeffect', columna)
-        listaColumna.push({ 'label': Object.keys(columna).toString() });
-      });
-
-      //datos periodo
-      console.log('Periodo datos[0][columna1][0][ruben][datoreal]', datos[0]['columna1'][0]['ruben'][0]['datoreal'])
-
-      datos[0]['columna1'][0]['ruben'][0]['datoreal'].map((tipo) => {
-
-        console.log('Periodo dentro map', tipo)
-        listaPeriodos.push({ 'label': Object.keys(tipo).toString() });
-      });
-      setListaNombres(listanombres)
-      setListaColumna(listaColumna)
-      setListaPeriodo(listaPeriodos)
-    }
-  }, [datos])
-  console.log('listaNombres', listaNombres)
-  console.log('listaColumna', listaColumna)
-
+  // nombreTipoDato es para select, tipoDato para guardar el nombre seleccionado para la grafica
+  const [nombreColumna, setNombreColumna] = useState(null)
+  const [columna, setColumna] = useState(null);
 
 
 
@@ -93,34 +61,109 @@ export default function TimetrackingForecast() {
   const [personName, setPersonName] = useState(null);
 
 
-// nombreTipoDato es para select, tipoDato para guardar el nombre seleccionado para la grafica
-  const [nombreColumna, setNombreColumna] = useState(null)
-  const [columna, setColumna] = useState(null);
-
   // nombreTipoDato es para select, tipoDato para guardar el nombre seleccionado para la grafica
   const [nombrePeriodo, setNombrePeriodo] = useState(null)
   const [periodo, setPeriodo] = useState(null);
 
+
+  useEffect(() => {
+
+    if (nombreColumna === null){
+      setColumna(null)
+    }
   
+  }, [nombreColumna])
+  
+  // Carga columnas
+  useEffect(() => {
+    if (datos != null) {
+      console.log('useeffect datos', datos)
 
-  const [frecuencia, setFrecuencia] = useState(null);
+      if (columna === null) {
+        //datos columna
+        const listaColumna = []
+
+        datos.map((columna, index) => {
+
+          listaColumna.push({
+            'label': Object.keys(columna).toString(),
+            'index': index
+          });
+
+        });
+        console.log('listaColumna', listaColumna)
+        setListaColumna(listaColumna)
+      }
+    }
+  }, [datos])
 
 
+  //datos nombres
+  useEffect(() => {
+    if (columna != null) {
+      const listanombres = []
+      console.log('cambio columna')
+      
+      datos[indicesColumnas][columna].map((nombre,index) => {
+
+        listanombres.push({ 'label': Object.keys(nombre).toString(), 'index':index });
+      })
+      
+      setNombre(null)
+      setPeriodo(null)
+      setNombrePeriodo(null)
+      setListaNombres(listanombres)
+    }
+  }, [columna])
 
 
+ // lista periodo
+  useEffect(() => {
+    if(personName!=null && columna!=null){
+      const listaPeriodos = []
 
+      datos[indicesColumnas][columna][indicesNombres][personName][0]['datoreal'].map((tipo, index) => {
 
- 
+        listaPeriodos.push({ 'label': Object.keys(tipo).toString() , 'index': index });
+    });
 
+      
+    setListaPeriodo(listaPeriodos)
+    }
+    
+  }, [personName])
+  
+  // grafica
+  useEffect(() => {
+
+    if (personName != null && columna != null && periodo!=null  ){
+
+      const graf = []
+      datos[indicesColumnas][columna][indicesNombres][personName][0]['datoreal'][indicesPeriodo][periodo].map((dato)=>{
+        console.log('dato dentro map useefect dato',dato)
+        graf.push({ 'fecha': Object.keys(dato), 'horas_h': Object.values(dato) })
+      })
+      setDatosGrafico(graf)
+    }
+  
+    
+  }, [personName,columna, periodo])
+
+  useEffect(() => {
+    setDatosGrafico(null)
+    
+  }, [columna])
+  
+  
 
 
   return (
     <>
-      <div>
+      {/* <div>
         <button onClick={() => { console.log('boton nombre', nombre) }}>A ver q sale en nombre</button>
         <button onClick={() => { console.log('boton personName', personName) }}>A ver q sale en personName</button>
 
-      </div>
+      </div> */}
 
       {datos ? (
         <React.Fragment>
@@ -130,16 +173,24 @@ export default function TimetrackingForecast() {
 
             <Grid container columnSpacing={40} >
               <Grid item xs={2} >
+                <p></p>
 
-                {/* <MultipleSelectPlaceholder1 datos={datos} personName={personName} setPersonName={setPersonName} cambiarGrafica={cambiarGrafica} datosGrafico={datosGrafico} />
-            <MultipleSelectPlaceholder2/>
-            <MultipleSelectPlaceholder3/> */}
-                {/* <SelectLabels1 datos={datos}  personName={personName} setPersonName={setPersonName} cambiarGrafica={cambiarGrafica} datosGrafico={datosGrafico} />
-            <SelectLabels2/>
-            <SelectLabels3 /> */}
-                <ComboBoxNombres listaNombres={listaNombres} nombre={nombre} setNombre={setNombre} setPersonName={setPersonName} />
-                <ComboBoxColumna listaColumna={listaColumna} columna={columna} setColumna={setColumna} setNombreColumna={setNombreColumna} nombreColumna={nombreColumna} />
-                <ComboBoxPeriodo listaPeriodo={listaPeriodo} periodo={periodo} setPeriodo={setPeriodo} setNombrePeriodo={setNombrePeriodo} nombrePeriodo={nombrePeriodo} />
+                <ComboBoxColumna setIndicesColumnas={setIndicesColumnas} listaColumna={listaColumna} columna={columna} setColumna={setColumna} setNombreColumna={setNombreColumna} nombreColumna={nombreColumna} indicesColumnas={indicesColumnas} setPersonName={setPersonName} />
+
+              {nombreColumna? (
+                <>
+                <p></p>
+                    <ComboBoxNombres listaNombres={listaNombres} nombre={nombre} setNombre={setNombre} setPersonName={setPersonName} setIndicesNombres={setIndicesNombres} />
+                    <p></p>
+                    <ComboBoxPeriodo listaPeriodo={listaPeriodo}  setPeriodo={setPeriodo} setNombrePeriodo={setNombrePeriodo} nombrePeriodo={nombrePeriodo} setIndicesPeriodo={setIndicesPeriodo} />
+                  </>
+              ):(
+                <h6> Seleccione columna</h6>
+              )}
+         
+
+                
+                
               </Grid>
               <Grid item xs={8}>
                 <Example datosGrafico={datosGrafico} />
