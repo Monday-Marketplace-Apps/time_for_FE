@@ -2,6 +2,7 @@ import React from "react";
 import {
     LineChart,
     Line,
+    Bar,
     XAxis,
     YAxis,
     CartesianGrid,
@@ -43,7 +44,7 @@ import {
 
 const Example = (props) => {
     const { datosGrafico } = props
- 
+  console.log('datosGrafico',)
     
   return (
     <>
@@ -61,7 +62,7 @@ const Example = (props) => {
       >
           
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="fecha" tick={{ fontSize: 12 }} />
+          <XAxis dataKey="Fecha" tick={{ fontSize: 12 }} />
           <YAxis tick={{ fontSize: 12 }} />
           <Tooltip contentStyle={{
             fontSize: '14px'
@@ -69,11 +70,12 @@ const Example = (props) => {
           
           <Line
               type="monotone"
-              dataKey="horas_h"
+              dataKey="Horas"
               stroke="#8884d8"
               activeDot={{ r: 8 }}
               
           />
+          <Bar dataKey="Predicción" stackId="a" fill="#cf6666" unit=' Horas' name='Prediccion' />
 
       </LineChart>
       ):(

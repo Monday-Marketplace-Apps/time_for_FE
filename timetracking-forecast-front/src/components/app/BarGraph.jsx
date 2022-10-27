@@ -3,6 +3,7 @@ import React from "react";
 import {
     BarChart,
     Bar,
+    Line,
     XAxis,
     YAxis,
     CartesianGrid,
@@ -78,6 +79,7 @@ export default function BarGraph(props) {
             <Legend iconSize={5} wrapperStyle={{ fontSize: "15px" }}  verticalAlign='top' />
             <Bar dataKey="Horas" stackId="a" fill="#3f84d3" />
             <Bar dataKey="Predicción" stackId="a" fill="#cf6666" unit=' Horas'  name='Prediccion' />
+            <Line type="monotone" dataKey="Horas" stroke="#ff7300" />
 
         </BarChart>
     );
